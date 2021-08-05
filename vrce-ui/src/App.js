@@ -22,7 +22,10 @@ const App = () => {
       <Route exact path="/">
         <CardList deployments={deployments} />
       </Route>
-      <Route exact path="/detail/:detailId" component={DeploymentDetail} />
+      <Route exact path="/vRCE">
+        <CardList deployments={deployments} />
+      </Route>
+      <Route exact path="/vRCE/detail/:detailId" component={DeploymentDetail} />
     </AppContainer>
   );
 }

@@ -12,7 +12,7 @@ export const Navigation = () => {
             <AppBar position="static" style={{ backgroundColor: "#00364D" }}>
                 <Toolbar>
                     <Logo src={logo} alt=""/>
-                    <Link to="/" style={{ color: '#FFF', textDecoration: 'none' }}>
+                    <Link to="/vRCE" style={{ color: '#FFF', textDecoration: 'none' }}>
                         <Typography>
                             <h2>
                                 <b>vRealize Cloud Efficiency</b>
