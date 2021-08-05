@@ -1,0 +1,47 @@
+import React, { useEffect, useState } from 'react';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { Box, TablePage, Line, Category, Description } from './deployment-detail.styles';
+
+export const DeploymentDetail = (props) => {
+    
+    const [deployment, setDeployment] = useState([]);
+
+    const deploymentId = props.match.params.detailId;
+
+    useEffect( () => {
+        fetch(`https://jsonplaceholder.typicode.com/posts/${deploymentId}`)
+        .then(response => response.json())
+        .then(deployment => {console.log(deployment); setDeployment(deployment)})
+      }) 
+    
+    return(
+        <Box>
+            <Typography variant="h4" component="h1">Deployment Name: {deployment.title}</Typography>
+            <Typography variant="h5" component="h2" color="textSecondary">Deployment ID: {deployment.id}</Typography>
+
+            <TableContainer component={Paper}>
+                <TablePage aria-label="simple table">
+                    <TableBody>
+                        <TableRow>
+                            <TableCell component="th" scope="row">
+                                <Line>
+                                    <Category variant="h5" component="h2" >Description: </Category>
+                                </Line>
+                            </TableCell>
+                            <TableCell align="left">
+                                <Line>
+                                    <Description variant="h5" component="h2">{deployment.body}</Description>
+                                </Line>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </TablePage>
+            </TableContainer>
+        </Box>
+    )
+}
