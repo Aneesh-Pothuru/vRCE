@@ -5,7 +5,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Box, TablePage, Line, Category, Description } from './deployment-detail.styles';
+import ChartistGraph from "react-chartist";
+import { cpuUsageChart, memoryUsage } from '../chart-data/chart-data';
+import { Box, TablePage, ChartContainer, Line, Category, Description, Headers } from './deployment-detail.styles';
 
 export const DeploymentDetail = (props) => {
     
@@ -42,6 +44,22 @@ export const DeploymentDetail = (props) => {
                     </TableBody>
                 </TablePage>
             </TableContainer>
+            <Headers variant="h6" component="h2">CPU Usage</Headers>
+            <ChartContainer>
+                <ChartistGraph
+                    data={cpuUsageChart.data}
+                    type="Line"
+                    options={cpuUsageChart.options}
+                />
+            </ChartContainer>
+            <Headers variant="h6" component="h2">Memory Usage</Headers>
+            <ChartContainer>
+                <ChartistGraph
+                    data={memoryUsage.data}
+                    type="Line"
+                    options={memoryUsage.options}
+                />
+            </ChartContainer>
         </Box>
     )
 }
