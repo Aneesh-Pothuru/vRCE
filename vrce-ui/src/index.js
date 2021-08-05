@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename="/vRCE">
     <App />
   </BrowserRouter>,
   document.getElementById('root')
