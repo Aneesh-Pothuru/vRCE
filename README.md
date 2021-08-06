@@ -212,3 +212,84 @@ export const foobarApi = (foo, bar) => {
 ```
 
 # Backend
+
+This application's backend was written using Python.
+
+## Generating Consumer Data
+
+The file consumer_data_generator.py creates a file loaded with sample consumer data with information consisting of Name, User ID, Cloud Type, CPU Usage and Memory Usage.
+
+```python
+with open('consumer_data.csv', 'w', newline='') as file:
+	writer = csv.writer(file)
+	# i represents value for each User ID
+	for i in range(1,10+1): #creates 10 User IDs
+		# j represents value for number of deployments under User ID
+		for j in range(1,10+1): #creates 10 deployments for each User ID
+			cpu_usage = random.randint(0,100)
+			memory_usage = random.randint(0,100)
+			cloud_identifier = random.randint(1,2) #randomly determine the cloud type of deployment
+
+			if cloud_identifier == 1: # Let 1 symbolize public cloud
+				writer.writerow(["Name:"+str(i)+"-"+str(j), i, "Public", cpu_usage, memory_usage])
+			else: #case: cloud_identifier == 2, Let 2 symbolize private cloud
+				writer.writerow(["Name:"+str(i)+"-"+str(j), i, "Private", cpu_usage, memory_usage])
+```
+
+## Reading Consumer Data
+
+Data from the inputted file containing consumer data is read and stored.
+
+```python
+with open('consumer_data.csv', 'r') as file:
+	reader = csv.reader(file)
+	#note data convention: Name, User ID, Cloud Type, CPU usage, Memory Usage
+	for line in reader:
+		#add each line data to its related array
+		name_list.append(line[0])
+		user_id_list.append(line[1])
+		cloud_type_list.append(line[2])
+		cpu_usage_list.append(line[3])
+		memory_usage_list.append(line[4])
+```
+
+## Analyzing Consumer Data
+
+Total usage for every deployment is found and analyzed to check whether the transition between public and private cloud should be made.
+
+```python
+total_usage = int(cpu_usage_list[counter]) + int(memory_usage_list[counter])
+```
+
+```python
+if total_usage <= 100:
+			#check cloud type is set to Public
+			if cloud_type_list[counter] == "Public":
+				#keep original data as is
+				writer.writerow([name_list[counter], user_id_list[counter], cloud_type_list[counter], cpu_usage_list[counter], memory_usage_list[counter]])
+				print(name_list[counter] + " - Kept in Public Cloud")
+			else: #case: cloud type listed as private, so transition to public cloud
+				#update cloud type
+				writer.writerow([name_list[counter], user_id_list[counter], "Public", cpu_usage_list[counter], memory_usage_list[counter]])
+				print(name_list[counter] + " - Moved to Public Cloud")
+		else: #case: total_usage > 100:
+			#check cloud type is set to Private
+			if cloud_type_list[counter] == "Private":
+				#keep original data as is
+				writer.writerow([name_list[counter], user_id_list[counter], cloud_type_list[counter], cpu_usage_list[counter], memory_usage_list[counter]])
+				print(name_list[counter] + " - Kept in Private Cloud")
+			else: #case: cloud type listed as public, so transition to private cloud
+				#update cloud type
+				writer.writerow([name_list[counter], user_id_list[counter], "Private", cpu_usage_list[counter], memory_usage_list[counter]])
+				print(name_list[counter] + " - Moved to Private Cloud")
+```
+
+Both reading and analyzing the consumer data are done in the cloud_checker.py file.
+
+## Automizing 
+
+To automize the process of checking if consumer data is in the most cost-effective cloud, use crontab to schedule a cron job.
+
+```vim
+0 4 * * 1 /usr/local/bin/python3 /Users/username/Documents/vRCE/vrce/cloud_checker.py
+```
