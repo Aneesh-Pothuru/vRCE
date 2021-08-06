@@ -286,7 +286,7 @@ if total_usage <= 100:
 
 Both reading and analyzing the consumer data are done in the cloud_checker.py file.
 
-## Automizing 
+## Automizing Total Usage - Cloud Type Check
 
 To automize the process of checking if consumer data is in the most cost-effective cloud, use crontab to schedule a cron job.
 
