@@ -1,0 +1,1 @@
+0 4 * * 1 /usr/local/bin/python3 /Users/username/Documents/vRCE/vrce/cloud_checker.py
